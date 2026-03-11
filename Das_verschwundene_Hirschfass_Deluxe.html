@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Das verschwundene Hirschfass – Deluxe Edition</title>
+  <style>
+    :root{
+      --bg:#120e0b;
+      --bg2:#1b1511;
+      --panel:#1f1813;
+      --panel-hi:#2a2019;
+      --wood:#4a3324;
+      --wood2:#6b4a32;
+      --paper:#eadcc0;
+      --paper-2:#c7b28c;
+      --paper-3:#9c8768;
+      --brass:#b98a43;
+      --brass-hi:#e3c17c;
+      --wine:#6a2d21;
+      --good:#6e9b65;
+      --bad:#bf6b61;
+      --focus:#ffd58b;
+      --shadow:0 18px 40px rgba(0,0,0,.38);
+      --radius:18px;
+      --radius-lg:28px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--paper);
+      font-family:Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 20% -10%, rgba(227,193,124,.10), transparent 28%),
+        radial-gradient(circle at 90% 0%, rgba(227,193,124,.06), transparent 24%),
+        linear-gradient(180deg, #1a1410 0%, #120e0b 100%);
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 1px, transparent 1px 18px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 1px, transparent 1px 18px);
+      opacity:.18;
+      pointer-events:none;
+    }
+    .app{max-width:1320px; margin:0 auto; padding:22px; min-height:100%; display:flex; flex-direction:column; gap:16px; position:relative}
+    .panel{
+      position:relative;
+      background:linear-gradient(180deg, rgba(39,30,23,.96), rgba(25,20,16,.98));
+      border:1px solid rgba(191,146,82,.34);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panel::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.025), transparent 18%, transparent 82%, rgba(255,255,255,.015));
+      pointer-events:none;
+    }
+    .hero{
+      display:grid;
+      gap:18px;
+      padding:30px;
+      text-align:center;
+      border-radius:var(--radius-lg);
+    }
+    .hero h1{
+      margin:0;
+      font-size:clamp(2.1rem,4.8vw,4rem);
+      line-height:1;
+      letter-spacing:.02em;
+    }
+    .hero p{margin:0; color:var(--paper-2); line-height:1.55; font-size:1.08rem}
+    .hero-top{
+      display:flex; gap:12px; align-items:center; justify-content:center;
+      color:var(--paper-3); text-transform:uppercase; letter-spacing:.16em; font-size:.78rem;
+    }
+    .coin{
+      width:44px; height:44px; display:grid; place-items:center;
+      border-radius:50%;
+      background:radial-gradient(circle at 32% 28%, #f4dbab, var(--brass-hi) 28%, var(--brass) 70%);
+      color:#2a1e15; font-weight:700; border:1px solid #f0d396;
+      box-shadow:inset 0 2px 0 rgba(255,255,255,.45), 0 6px 16px rgba(0,0,0,.28);
+    }
+    .hero-media,.station-hero,.finale-hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      border:1px solid rgba(227,193,124,.36);
+      background:#17120f;
+      box-shadow:var(--shadow);
+    }
+    .hero-media::after,.station-hero::after,.finale-hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), transparent 20%, transparent 76%, rgba(0,0,0,.18));
+      pointer-events:none;
+    }
+    .hero-media img,.station-hero img,.finale-hero img,.seal img,.target img,.cellar-bg{
+      display:block; width:100%; height:auto;
+    }
+    .hero-media img,.station-hero img,.finale-hero img{transition:transform .45s ease, filter .45s ease;}
+    .station-card:hover .station-hero img,.success:hover .finale-hero img{transform:scale(1.01); filter:brightness(1.03);}
+    .hero-media{max-width:1120px; margin:0 auto}
+    .hero-actions,.row{display:flex; flex-wrap:wrap; gap:12px; justify-content:center}
+    button,.btn,select,input{
+      font:inherit; color:inherit;
+      min-height:46px;
+      max-width:100%;
+      white-space:normal;
+      line-height:1.3;
+      border-radius:12px;
+      border:1px solid #7a5a38;
+      background:linear-gradient(180deg, #3a2a1f, #2a1f18);
+      padding:10px 16px;
+      transition:transform .16s ease, filter .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+    button,.btn{cursor:pointer}
+    button:hover,.btn:hover,select:hover,input:hover{filter:brightness(1.04); transform:translateY(-1px)}
+    button:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,.card:focus-visible,.seal:focus-visible,.hidden-item:focus-visible,.plate:focus-visible{
+      outline:3px solid var(--focus); outline-offset:2px;
+    }
+    .btn-primary{
+      background:linear-gradient(180deg, #f1d59a, var(--brass-hi) 28%, var(--brass) 100%);
+      color:#2a1e15; border-color:#f0d396; font-weight:700;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 10px 18px rgba(0,0,0,.18);
+    }
+    .btn-danger{background:linear-gradient(180deg, #733325, #55251c); border-color:#a9685c}
+    .btn-link{background:none; border:none; padding:8px 10px; color:var(--paper); text-decoration:underline}
+    .header{
+      display:grid; grid-template-columns:1.6fr 1fr 1fr auto; gap:14px; align-items:center; padding:16px 18px;
+    }
+    .brandline{
+      display:flex; align-items:center; gap:14px;
+    }
+    .brandtext strong{display:block; font-size:1.28rem}
+    .brandtext small{display:block; color:var(--paper-3); letter-spacing:.1em; text-transform:uppercase}
+    .metric{
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(227,193,124,.2);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.08));
+    }
+    .metric .label{display:block; color:var(--paper-3); font-size:.82rem; text-transform:uppercase; letter-spacing:.12em}
+    .metric .value{display:block; margin-top:4px; font-size:1.2rem; font-weight:700}
+    .layout{
+      display:grid; grid-template-columns:320px 1fr; gap:16px; flex:1;
+    }
+    .nav{
+      padding:16px;
+      display:grid; gap:14px; align-content:start; position:sticky; top:16px; height:max-content;
+    }
+    .progressbox{
+      padding:14px; border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.10));
+      border:1px solid rgba(227,193,124,.16);
+    }
+    .progressbar{
+      height:10px; border-radius:99px; background:#2c231c; overflow:hidden; border:1px solid rgba(227,193,124,.18);
+      margin-top:10px;
+    }
+    .progressfill{
+      height:100%;
+      background:linear-gradient(90deg, #8b6231, var(--brass-hi));
+      width:0%;
+      box-shadow:0 0 20px rgba(227,193,124,.35);
+      transition:width .28s ease;
+    }
+    .station-tab{
+      width:100%; text-align:left; padding:13px 14px; border-radius:14px;
+      border:1px solid #5d4734; background:linear-gradient(180deg, #2d221a, #241b15);
+      display:grid; gap:4px; position:relative;
+    }
+    .station-tab::before{
+      content:"";
+      position:absolute; left:0; top:0; bottom:0; width:5px; border-radius:14px 0 0 14px; background:transparent;
+    }
+    .station-tab.locked{opacity:.42; cursor:not-allowed}
+    .station-tab.active{border-color:var(--brass-hi); box-shadow:0 0 0 1px rgba(227,193,124,.18) inset, 0 12px 22px rgba(0,0,0,.22)}
+    .station-tab.active::before{background:linear-gradient(180deg, var(--brass-hi), var(--brass))}
+    .station-tab .mini{font-size:.84rem; color:var(--paper-3)}
+    .letters{
+      padding:14px; border-radius:16px; background:#19130f; border:1px dashed #785b38;
+    }
+    .letters strong{display:block; margin-bottom:10px}
+    .plate-wrap{display:flex; flex-wrap:wrap; gap:10px}
+    .plate{
+      width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-weight:700;
+      color:#2a1e15; background:linear-gradient(180deg, #f1d59a, var(--brass-hi) 28%, var(--brass) 100%);
+      border:1px solid #f0d396; box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+    }
+    .plate.empty{
+      background:linear-gradient(180deg, #30251d, #241b15);
+      color:#8e7658; border-color:#5c4734;
+    }
+    .content{padding:22px; display:grid; gap:16px}
+    .station-card{display:grid; gap:16px; animation:fadeUp .26s ease}
+    .station-badge{
+      display:inline-flex; align-items:center; gap:10px; width:max-content;
+      padding:8px 12px; border-radius:999px; border:1px solid rgba(227,193,124,.24);
+      background:rgba(255,255,255,.03); color:var(--paper-3); text-transform:uppercase; letter-spacing:.14em; font-size:.78rem;
+    }
+    .station-card h2{margin:0; font-size:2rem; line-height:1.05}
+    .desc{margin:0; color:var(--paper-2); line-height:1.6; font-size:1.05rem}
+    .subtext{color:var(--paper-3); font-size:.96rem}
+    .section-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:14px}
+    .box{
+      padding:16px; border-radius:18px; border:1px solid rgba(227,193,124,.14);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.08));
+    }
+    .feedback{padding:12px 14px; border-radius:14px; font-weight:700}
+    .feedback.good{background:rgba(110,155,101,.16); border:1px solid #5e8856}
+    .feedback.bad{background:rgba(191,107,97,.14); border:1px solid #9d594f}
+    .hint-box{display:grid; gap:10px; padding:14px; background:#19130f; border:1px solid #574432; border-radius:16px}
+    .hint-content{padding:12px; border-radius:12px; background:#241c16; color:var(--paper-2)}
+    .cards{display:grid; gap:12px}
+    .card{
+      background:linear-gradient(180deg, #eadfc7, #d7c6a7);
+      color:#2b2119; border:1px solid #907450; border-radius:16px; padding:14px;
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+      box-shadow:0 8px 18px rgba(0,0,0,.12);
+    }
+    .card-meta{font-size:.92rem; color:#5e4a33; margin-top:4px}
+    .matching{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .match-row{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; background:#2b2119; padding:12px; border-radius:14px; border:1px solid #5e4b39}
+    .seals{display:grid; grid-template-columns:repeat(2,minmax(180px,1fr)); gap:12px}
+    .seal{
+      padding:16px; border:1px solid #7a5d3d; border-radius:18px;
+      background:linear-gradient(180deg, #2f241c, #231a14); cursor:pointer; display:grid; gap:10px; min-height:132px;
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
+    }
+    .seal img{width:74px; height:74px; object-fit:contain}
+    .seal small{color:var(--paper-3)}
+    .seal.selected{border-color:var(--brass-hi); box-shadow:0 0 0 2px rgba(212,174,104,.18), 0 12px 24px rgba(0,0,0,.22)}
+    .scene-wrap{
+      position:relative; width:100%; border-radius:18px; overflow:hidden;
+      border:1px solid #5f4a36; background:#201913; box-shadow:var(--shadow);
+    }
+    .hidden-item{
+      position:absolute; border-radius:12px; border:2px solid rgba(255,223,145,.15);
+      background:rgba(255,223,145,.03); color:transparent; cursor:pointer;
+      transition:background .16s ease, border-color .16s ease, transform .16s ease;
+    }
+    .hidden-item:hover,.hidden-item:focus-visible{
+      background:rgba(255,223,145,.16); border-color:rgba(255,223,145,.7); transform:scale(1.02);
+    }
+    .hidden-item.found{border-color:#6da66b; background:rgba(109,166,107,.22)}
+    .target-list{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
+    .target{
+      padding:9px 12px; border-radius:16px; background:#2b2119; border:1px solid #5f4a35;
+      display:flex; align-items:center; gap:12px;
+    }
+    .target img{width:38px; height:38px; object-fit:contain; flex:0 0 38px}
+    .target.done{background:rgba(110,155,101,.18); border-color:#6da66b}
+    .triple{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px}
+    .final-box{
+      display:grid; gap:12px; padding:16px; border:1px solid #624c36;
+      border-radius:18px; background:#1d1713;
+    }
+    .success{
+      padding:26px; display:grid; gap:18px; text-align:center; animation:fadeUp .32s ease;
+    }
+    .keg{
+      width:160px; height:182px; margin:0 auto; border-radius:52%/20%; position:relative;
+      background:linear-gradient(180deg, #7a5439, #523629); border:2px solid #8e6b4b; overflow:hidden;
+      animation:float 2.8s ease-in-out infinite; box-shadow:var(--shadow);
+    }
+    .keg:before,.keg:after{
+      content:""; position:absolute; left:10px; right:10px; height:12px; border-radius:12px; background:linear-gradient(180deg, #f1d59a, var(--brass-hi) 28%, var(--brass) 100%);
+    }
+    .keg:before{top:42px}.keg:after{bottom:42px}
+    .foam{
+      position:absolute; top:-18px; left:15px; right:15px; height:44px;
+      background:radial-gradient(circle at 30% 60%,#fff,#ece2cf 60%,#d2c4a4 80%);
+      border-radius:40% 40% 50% 50%; animation:foam 1.2s ease-out forwards;
+    }
+    .toast{
+      position:fixed; right:16px; bottom:16px; background:#2a211a; border:1px solid #7a5c39;
+      border-radius:12px; padding:10px 14px; box-shadow:var(--shadow);
+      opacity:0; transform:translateY(8px); transition:.25s; pointer-events:none; z-index:20;
+    }
+    .toast.show{opacity:1; transform:translateY(0)}
+    .archive-grid{display:grid; grid-template-columns:repeat(2,minmax(220px,1fr)); gap:12px}
+    .archive-doc{
+      padding:14px; border-radius:16px; background:linear-gradient(180deg, #eadfc7, #d7c6a7);
+      color:#2b2119; border:1px solid #907450; box-shadow:0 8px 18px rgba(0,0,0,.12);
+    }
+    .archive-doc strong{display:block; margin-bottom:8px; font-size:1.05rem}
+    .archive-doc .label{display:block; color:#5e4a33; font-size:.92rem; margin-bottom:10px}
+    .clue-list{display:grid; gap:10px}
+    .clue{
+      padding:12px 14px; border-radius:14px; border:1px solid rgba(227,193,124,.18);
+      background:rgba(255,255,255,.03); color:var(--paper-2);
+    }
+    dialog{max-width:760px; border:none; border-radius:18px; padding:0; background:#1c1511; color:var(--paper)}
+    dialog::backdrop{background:rgba(0,0,0,.58)}
+    .modal{padding:22px; display:grid; gap:12px}
+    @keyframes float{50%{transform:translateY(-6px)}}
+    @keyframes foam{from{transform:translateY(-14px);opacity:.4}to{transform:translateY(0);opacity:1}}
+    @keyframes fadeUp{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:translateY(0)}}
+    @media (max-width:1100px){
+      .layout{grid-template-columns:1fr}
+      .nav{position:static}
+      .header{grid-template-columns:1fr 1fr}
+      .section-grid,.matching,.triple,.seals,.archive-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:720px){
+      .app{padding:14px}
+      .header{grid-template-columns:1fr}
+      .hero{padding:20px}
+      .station-card h2{font-size:1.7rem}
+    }
+  
+    /* Expert Edition additions */
+    .builder-grid,.slot-grid,.code-lock,.evidence-grid,.formula-grid{display:grid; gap:12px}
+    .builder-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}
+    .slot-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}
+    .code-lock{grid-template-columns:1.25fr .95fr}
+    .evidence-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}
+    .formula-grid{grid-template-columns:repeat(3,minmax(180px,1fr))}
+    .meta-tag{display:inline-block; margin-top:6px; padding:4px 8px; border-radius:999px; border:1px solid rgba(185,138,67,.45); color:var(--paper-2); font-size:.84rem; background:rgba(255,255,255,.04)}
+    .tiny{font-size:.86rem; color:var(--paper-3)}
+    .code-card{padding:14px; border-radius:16px; background:linear-gradient(180deg,#231b15,#1b1511); border:1px solid #6b5238}
+    .code-card strong{display:block; margin-bottom:8px}
+    .route-slot{display:grid; gap:8px; padding:12px; border-radius:16px; background:#201812; border:1px solid #5e4937}
+    .step-note{padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.04); color:var(--paper-2); border:1px solid rgba(227,193,124,.12)}
+    .found-clue{padding:10px 12px; border-radius:12px; background:linear-gradient(180deg,#eadfc7,#d7c6a7); color:#2b2119; border:1px solid #907450}
+    .found-clue small{display:block; color:#5e4a33; margin-top:4px}
+    .warning{color:#ffcb90}
+    @media (max-width: 900px){
+      .builder-grid,.slot-grid,.code-lock,.evidence-grid,.formula-grid,.matching,.archive-grid,.seals,.triple{grid-template-columns:1fr}
+    }
+
+
+    .layout > *, .section-grid > *, .code-lock > *, .matching > *, .triple > *, .archive-grid > *, .builder-grid > *, .slot-grid > *, .evidence-grid > *, .formula-grid > *, .route-slot, .box, .metric, .station-tab, .letters, .target, .found-clue, .archive-doc, .clue, .hint-content, .feedback, .step-note, .brandtext, .hero, .station-card, label, .match-row {
+      min-width:0;
+    }
+    .station-tab span, .desc, .subtext, .tiny, .label, .value, .clue, .hint-content, .feedback, .step-note, .found-clue, .target, .archive-doc, .card, strong, small, p, h1, h2, h3, label, .meta-tag {
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+    select,input{width:100%;}
+    select{font-size:.95rem; padding-right:40px;}
+    .station-tab{align-items:start;}
+    .target{min-height:64px;}
+    .row{align-items:center;}
+    .header .row{align-items:stretch;}
+    .header .row button{flex:1 1 auto;}
+    .box>strong,.letters strong,.progressbox strong{display:block; margin-bottom:6px;}
+    .match-row{grid-template-columns:minmax(0,1fr) minmax(180px,240px);}
+    .route-slot strong,.match-row strong{display:block; margin-bottom:2px;}
+    .audio-indicator.is-on{border-color:var(--brass-hi); box-shadow:0 0 0 1px rgba(227,193,124,.18) inset, 0 8px 18px rgba(0,0,0,.18);}
+    .solve-burst{animation:solveBurst .68s ease;}
+    .plate-earned{animation:plateEarned .9s ease;}
+    .progressfill.glow{animation:progressGlow .95s ease;}
+    .scene-wrap.found-pulse{animation:foundPulse .48s ease;}
+    .feedback.good{animation:feedbackPulse .62s ease;}
+    .feedback.bad.shake{animation:badShake .38s ease;}
+    .hint-content{animation:fadeUp .22s ease;}
+    @keyframes solveBurst{0%{transform:scale(.992); box-shadow:0 0 0 rgba(227,193,124,0)}45%{transform:scale(1.006); box-shadow:0 0 0 10px rgba(227,193,124,.08)}100%{transform:scale(1); box-shadow:0 0 0 rgba(227,193,124,0)}}
+    @keyframes plateEarned{0%{transform:scale(.78) rotate(-8deg)}45%{transform:scale(1.16) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+    @keyframes progressGlow{0%{filter:brightness(1)}45%{filter:brightness(1.35)}100%{filter:brightness(1)}}
+    @keyframes foundPulse{0%{transform:scale(1)}45%{transform:scale(1.01)}100%{transform:scale(1)}}
+    @keyframes feedbackPulse{0%{transform:scale(.985)}55%{transform:scale(1.01)}100%{transform:scale(1)}}
+    @keyframes badShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="guideDialog">
+    <div class="modal">
+      <h2>Spielregeln</h2>
+      <p>Sie lösen sechs anspruchsvollere Stationen. Fast jede Station verlangt jetzt drei Schritte: Informationen lesen, logisch kombinieren und erst dann den Code oder die korrekte Konfiguration ableiten. Zwei Hinweise pro Station stehen bereit – aber die sollen nur den Knoten lösen, nicht das Denken übernehmen.</p>
+      <ul>
+        <li>Fortschritt und Timer laufen während des Spiels sichtbar mit.</li>
+        <li>Nach jeder Lösung wird die nächste Station freigeschaltet.</li>
+        <li>Der Spielstand wird lokal im Browser gespeichert.</li>
+      </ul>
+      <div class="row" style="justify-content:flex-end"><button class="btn-primary" id="closeGuide">Verstanden</button></div>
+    </div>
+  </dialog>
+
+<script>
+const STORAGE_KEY = "augustiner_escape_deluxe_v1";
+const ASSETS = {
+  start: { hero: "assets/00_intro_hero.svg" },
+  stations: {
+    1: { hero: "assets/01_klosterarchiv.svg" },
+    2: { hero: "assets/02_muenchner_spurensuche.svg" },
+    3: {
+      hero: "assets/03_siegel_des_brauers.svg",
+      options: {
+        wrong1: "assets/03b_emblem_wa_hopfen.svg",
+        correct: "assets/03a_emblem_jw_abtsstab.svg",
+        wrong2: "assets/03c_emblem_aj_bierkrug.svg",
+        wrong3: "assets/03d_emblem_mw_loewe.svg"
+      }
+    },
+    4: {
+      hero: "assets/04_lagerkeller_szene.svg",
+      icons: {
+        glocke: "assets/04a_objekt_glocke.svg",
+        schlegel: "assets/04b_objekt_schlegel.svg",
+        zapfhahn: "assets/04c_objekt_zapfhahn.svg",
+        mark200: "assets/04d_objekt_fassmarkierung_200.svg",
+        holzkeil: "assets/04e_objekt_holzkeil.svg"
+      }
+    },
+    5: { hero: "assets/05_holzfass_logik.svg" },
+    6: { hero: "assets/06_ritual_des_anstichs.svg" }
+  },
+  finale: { hero: "assets/07_finale_hirschfass.svg" }
+};
+const LETTERS = ["H","I","R","S","C","H"];
+const STATIONS = [
+  { id:1, title:"Station 1 – Das Klosterarchiv", letter:"H", hints:["Sie müssen zwei Dinge gleichzeitig zuordnen: Datum und Schublade. Beginnen Sie mit den beiden 19.-Jahrhundert-Dokumenten und arbeiten Sie sich dann nach links und rechts vor.","Die Schubladenfolge ist streng: In I liegt das älteste Dokument, in II das um 34 Jahre jüngere. Der Kellerkaufvertrag ist das ältere der beiden 19.-Jahrhundert-Stücke, die Warenzeichenrolle das jüngste Stück ganz rechts."] },
+  { id:2, title:"Station 2 – Münchner Spurensuche", letter:"I", hints:["Zwei Orte sind reine Ablenker: die offene Außenfläche und die Betriebszone. Konzentrieren Sie sich auf Ursprung, Keller, exklusive Räume und großen Saal.","Der historische Ursprung kommt zuerst. Der 1862 erworbene Ort liegt direkt vor den Wagner Salons; der Festsaal ist das Ziel."] },
+  { id:3, title:"Station 3 – Das Siegel des Brauers", letter:"R", hints:["Ein korrektes historisches Zeichen besteht nicht nur aus den Initialen, sondern auch aus dem richtigen Symbol und dem passenden Randtext.","Gesucht ist kein Tier- oder Hopfenmotiv. Das linke Initial liegt alphabetisch 13 Stellen vor dem rechten; der Rahmen verweist auf ein eingetragenes Zeichen, nicht auf ein Fest oder einen Ort."] },
+  { id:4, title:"Station 4 – Der alte Lagerkeller", letter:"S", hints:["Das Finden der Objekte ist nur Teil eins. Notieren Sie danach die Messingzahlen und ordnen Sie die Gegenstände nach ihrer Funktion im Ablauf.","Zuerst kommt die bloße Mengenangabe. Der Holzkeil steht direkt vor dem Schlegel, der Zapfhahn direkt danach, und die Glocke beendet die Folge."] },
+  { id:5, title:"Station 5 – Die Holzfass-Logik", letter:"C", hints:["Nicht alle Begriffe sind Fässer. Einer bezeichnet das Gestell, drei echte Fassgrößen; zwei Literangaben sind bewusst falsche Fährten.","Der Hase ist das kleinste Fass. Der Hirsch fasst doppelt so viel wie die Sau. Der Ganter ist kein Fass und bekommt deshalb keine Literzahl."] },
+  { id:6, title:"Station 6 – Das Ritual des Anstichs", letter:"H", hints:["Sie brauchen fünf reale Handlungsschritte; zwei Karten sind reine Dekoration und gehören nicht in die Reihenfolge.","Erst steht das Fass, dann sitzt der Hahn, dann kommt der Schlag. Das Signal folgt nach der Technik, der Ausschank ganz am Ende."] }
+];
+
+let timerRef = null;
+let audioEnabled = true;
+let audioCtx = null;
+let pendingFx = null;
+const initialState = () => ({
+  gameStarted:false,
+  currentStation:1,
+  unlockedStations:[1],
+  solvedStations:[],
+  collectedLetters:[],
+  hintUsage:{1:[],2:[],3:[],4:[],5:[],6:[]},
+  elapsedSeconds:0,
+  finalSolved:false,
+  stationData:{
+    s1:{
+      chronik:{date:"",drawer:""},
+      brauhaus:{date:"",drawer:""},
+      keller:{date:"",drawer:""},
+      marke:{date:"",drawer:""}
+    },
+    s2:{slots:["","","",""] , code:""},
+    s3:{left:"",right:"",symbol:"",border:""},
+    s4:{found:[], code:""},
+    s5:{Hase:"",Sau:"",Hirsch:"",Ganter:"", code:""},
+    s6:{slots:["","","","",""]},
+    finalInput:""
+  }
+});
+let state = loadState();
+
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? deepMerge(initialState(), JSON.parse(raw)) : initialState();
+  }catch{ return initialState(); }
+}
+function deepMerge(base, incoming){
+  if(Array.isArray(base)) return Array.isArray(incoming) ? incoming : base;
+  if(typeof base === "object" && base && typeof incoming === "object" && incoming){
+    const out = {...base};
+    Object.keys(incoming).forEach(k=>{
+      out[k] = k in base ? deepMerge(base[k], incoming[k]) : incoming[k];
+    });
+    return out;
+  }
+  return incoming ?? base;
+}
+function resetGame(){
+  state = initialState();
+  saveState();
+  clearInterval(timerRef);
+  render();
+}
+function formatTime(sec){
+  const m = String(Math.floor(sec/60)).padStart(2,"0");
+  const s = String(sec%60).padStart(2,"0");
+  return `${m}:${s}`;
+}
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"), 1700);
+}
+function ensureAudio(){
+  if(!audioEnabled) return null;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if(!AC) return null;
+  if(!audioCtx) audioCtx = new AC();
+  if(audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function playTone(freq=440, duration=.08, type='sine', volume=.028, whenOffset=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const start = ctx.currentTime + whenOffset;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(start);
+  osc.stop(start + duration + 0.02);
+}
+function playUiSound(kind){
+  if(!audioEnabled) return;
+  const map = {
+    start: ()=>{ playTone(392,.08,'triangle',.03,0); playTone(523.25,.12,'triangle',.03,.08); },
+    click: ()=>{ playTone(330,.05,'triangle',.018,0); },
+    hint: ()=>{ playTone(440,.06,'sine',.018,0); playTone(554.37,.08,'sine',.015,.05); },
+    find: ()=>{ playTone(523.25,.05,'triangle',.022,0); playTone(659.25,.08,'triangle',.022,.05); },
+    error: ()=>{ playTone(220,.08,'sawtooth',.02,0); playTone(196,.12,'sawtooth',.016,.05); },
+    solve: ()=>{ playTone(523.25,.08,'triangle',.028,0); playTone(659.25,.10,'triangle',.028,.07); playTone(783.99,.16,'triangle',.03,.16); },
+    finale: ()=>{ playTone(523.25,.08,'triangle',.03,0); playTone(659.25,.1,'triangle',.03,.08); playTone(783.99,.12,'triangle',.03,.16); playTone(1046.5,.22,'triangle',.03,.28); }
+  };
+  map[kind]?.();
+}
+function queueFx(type, payload={}){ pendingFx = {type, ...payload}; }
+function runPendingFx(){
+  if(!pendingFx) return;
+  const fx = pendingFx;
+  pendingFx = null;
+  if(fx.type === 'solve'){
+    playUiSound(fx.final ? 'finale' : 'solve');
+    document.querySelector('.progressfill')?.classList.add('glow');
+    const lastPlate = [...document.querySelectorAll('.plate-wrap .plate:not(.empty)')].pop();
+    lastPlate?.classList.add('plate-earned');
+    document.querySelector('#main .station-card, #main .success')?.classList.add('solve-burst');
+    setTimeout(()=>{
+      document.querySelector('.progressfill')?.classList.remove('glow');
+      lastPlate?.classList.remove('plate-earned');
+      document.querySelector('#main .station-card, #main .success')?.classList.remove('solve-burst');
+    }, 900);
+  }
+  if(fx.type === 'found'){
+    playUiSound('find');
+    document.querySelector('.scene-wrap')?.classList.add('found-pulse');
+    setTimeout(()=>document.querySelector('.scene-wrap')?.classList.remove('found-pulse'), 480);
+  }
+  if(fx.type === 'hint'){
+    playUiSound('hint');
+  }
+  if(fx.type === 'start'){
+    playUiSound('start');
+  }
+}
+function isSolved(id){ return state.solvedStations.includes(id); }
+function unlockNext(id){
+  const next = id + 1;
+  if(next<=6 && !state.unlockedStations.includes(next)) state.unlockedStations.push(next);
+}
+function solveStation(id, feedback){
+  if(isSolved(id)) return;
+  state.solvedStations.push(id);
+  state.collectedLetters.push(STATIONS[id-1].letter);
+  unlockNext(id);
+  state.currentStation = id===6 ? 7 : Math.min(id+1, 6);
+  saveState();
+  toast(`Messingbuchstabe ${STATIONS[id-1].letter} gesichert.`);
+  queueFx("solve", { id, final: id===6 });
+  setStationFeedback(true, feedback);
+  render();
+}
+function setStationFeedback(good, text){
+  const b = document.getElementById("feedback");
+  if(!b) return;
+  b.className = `feedback ${good?"good":"bad"}`;
+  if(!good){
+    b.classList.add("shake");
+    playUiSound("error");
+    setTimeout(()=>b.classList.remove("shake"), 420);
+  }
+  b.style.display = "block";
+  b.textContent = text;
+}
+function startTimer(){
+  clearInterval(timerRef);
+  timerRef = setInterval(()=>{
+    if(state.gameStarted && !state.finalSolved){
+      state.elapsedSeconds++;
+      saveState();
+      const t = document.getElementById("timer");
+      if(t) t.textContent = formatTime(state.elapsedSeconds);
+    }
+  },1000);
+}
+
+const app = document.getElementById("app");
+function render(){
+  if(!state.gameStarted){ renderStart(); requestAnimationFrame(runPendingFx); return; }
+  renderGame();
+  requestAnimationFrame(runPendingFx);
+}
+function renderStart(){
+  app.innerHTML = `
+    <section class="panel hero" aria-labelledby="game-title">
+      <div class="hero-top"><span>München · Braukunst · Rätselreise</span></div>
+      <div class="hero-media">
+        <img src="${ASSETS.start.hero}" alt="Geheimakte zum verschwundenen Hirschfass mit Fass, Karte und Archivmotiven" loading="eager" />
+      </div>
+      <h1 id="game-title">Das verschwundene Hirschfass</h1>
+      <p><strong>Eine digitale Rätselreise durch München, Braukunst und Holzfass-Tradition.</strong></p>
+      <p>Kurz vor dem feierlichen Anstich ist das symbolische Hirschfass verschwunden. Folgen Sie den Spuren aus Archiv, Stadt, Siegel und Lagerkeller – und rekonstruieren Sie das Ritual, bevor der Abend ohne Fass endet.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" id="startBtn">Spiel starten</button>
+        <button id="audioStart" class="audio-indicator ${audioEnabled?"is-on":""}">${audioEnabled?"Sound an":"Sound aus"}</button>
+        <button class="btn-link" id="guideBtn">Anleitung</button>
+      </div>
+    </section>
+  `;
+  document.getElementById("startBtn").onclick = ()=>{
+    ensureAudio();
+    queueFx("start");
+    state.gameStarted = true;
+    saveState();
+    startTimer();
+    render();
+  };
+  document.getElementById("audioStart").onclick = ()=>{ audioEnabled = !audioEnabled; if(audioEnabled) ensureAudio(); renderStart(); };
+  document.getElementById("guideBtn").onclick = ()=> document.getElementById("guideDialog").showModal();
+}
+function renderGame(){
+  const solvedCount = state.solvedStations.length;
+  const currentProgress = Math.round((solvedCount/6)*100);
+  app.innerHTML = `
+    <header class="panel header">
+      <div class="brandline">
+        <div class="coin">JW</div>
+        <div class="brandtext">
+          <strong>Das verschwundene Hirschfass</strong>
+          <small>Deluxe Edition</small>
+        </div>
+      </div>
+      <div class="metric">
+        <span class="label">Timer</span>
+        <span class="value" id="timer">${formatTime(state.elapsedSeconds)}</span>
+      </div>
+      <div class="metric">
+        <span class="label">Fortschritt</span>
+        <span class="value">${solvedCount}/6 Stationen</span>
+      </div>
+      <div class="row" style="justify-content:flex-end">
+        <button id="audioToggle" class="audio-indicator ${audioEnabled?"is-on":""}" aria-pressed="${audioEnabled}">${audioEnabled?"Sound an":"Sound aus"}</button>
+        <button id="guideHead">Anleitung</button>
+        <button id="reset" class="btn-danger">Spiel zurücksetzen</button>
+      </div>
+    </header>
+    <div class="layout">
+      <aside class="panel nav">
+        <div class="progressbox">
+          <strong>Ihr Fortschritt</strong>
+          <div class="subtext">Jede Station bringt einen Messingbuchstaben.</div>
+          <div class="progressbar"><div class="progressfill" style="width:${currentProgress}%"></div></div>
+        </div>
+        ${STATIONS.map(s=>{
+          const unlocked = state.unlockedStations.includes(s.id);
+          return `<button class="station-tab ${state.currentStation===s.id?"active":""} ${!unlocked?"locked":""}" ${!unlocked?"disabled":""} data-st="${s.id}">
+            <span>${s.title}</span>
+            <span class="mini">${isSolved(s.id)?"Gelöst":"Offen"}</span>
+          </button>`;
+        }).join("")}
+        <button class="station-tab ${state.currentStation===7?"active":""} ${state.solvedStations.length<6?"locked":""}" ${state.solvedStations.length<6?"disabled":""} data-st="7">
+          <span>Finale – Das verschwundene Hirschfass</span>
+          <span class="mini">${state.finalSolved?"Abgeschlossen":"Bereit"}</span>
+        </button>
+        <div class="letters">
+          <strong>Gesammelte Buchstaben</strong>
+          <div class="plate-wrap">
+            ${Array.from({length:6}).map((_,i)=>`<div class="plate ${state.collectedLetters[i]?"":"empty"}">${state.collectedLetters[i]||"?"}</div>`).join("")}
+          </div>
+        </div>
+      </aside>
+      <main class="panel content" id="main"></main>
+    </div>
+  `;
+  document.querySelectorAll(".station-tab[data-st]").forEach(btn=>btn.onclick=()=>{ state.currentStation = Number(btn.dataset.st); saveState(); render(); });
+  document.getElementById("audioToggle").onclick = ()=>{ audioEnabled = !audioEnabled; if(audioEnabled) ensureAudio(); renderGame(); };
+  document.getElementById("guideHead").onclick = ()=> document.getElementById("guideDialog").showModal();
+  document.getElementById("reset").onclick = ()=>{ if(confirm("Möchten Sie den gesamten Spielstand wirklich zurücksetzen?")) resetGame(); };
+  renderStation();
+}
+function renderHintBox(stationId){
+  const station = STATIONS[stationId-1];
+  const used = state.hintUsage[stationId] || [];
+  return `
+    <section class="hint-box">
+      <strong>Hinweise</strong>
+      ${[0,1].map(i=>`
+        <div>
+          <button data-hint="${i}" data-station="${stationId}">Hinweis ${i+1} öffnen</button>
+          ${used.includes(i)?`<div class="hint-content">${station.hints[i]}</div>`:""}
+        </div>
+      `).join("")}
+    </section>
+  `;
+}
+function bindHints(stationId){
+  document.querySelectorAll(`[data-station="${stationId}"][data-hint]`).forEach(btn=>btn.onclick=()=>{
+    const i = Number(btn.dataset.hint);
+    const arr = state.hintUsage[stationId];
+    if(!arr.includes(i)) arr.push(i);
+    saveState();
+    queueFx("hint", { stationId, i });
+    render();
+  });
+}
+function stationHero(id, alt){
+  return `<div class="station-hero"><img src="${ASSETS.stations[id].hero}" alt="${alt}" loading="eager" /></div>`;
+}
+function moveItem(arr, idx, dir){
+  const j = idx + dir;
+  if(j<0 || j>=arr.length) return;
+  [arr[idx], arr[j]] = [arr[j], arr[idx]];
+}
+function renderStation(){
+  if(state.currentStation===7){ renderFinale(); return; }
+  const m = document.getElementById("main");
+  const id = state.currentStation;
+
+  if(id===1){
+    const docs = [
+      {key:"chronik", title:"Dokument A – Klosterchronik", label:"geistlicher Ursprung an der Neuhauser Gasse"},
+      {key:"brauhaus", title:"Dokument B – Brauhausregister", label:"urkundlich belegtes Brauhaus"},
+      {key:"keller", title:"Dokument C – Kellerkaufvertrag", label:"Erwerb des Lagerkellers"},
+      {key:"marke", title:"Dokument D – Warenzeichenrolle", label:"Eintragung des historischen Zeichens"}
+    ];
+    const dates = ["1294","1328","1862","1887"];
+    const drawers = ["I","II","III","IV"];
+    m.innerHTML = `
+      <section class="station-card">
+        <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">1</span> Archivkombinatorik</span>
+        ${stationHero(1,"Illustration des Klosterarchivs mit Datumsplaketten und Hinweiszetteln")}
+        <h2>Station 1 – Das Klosterarchiv</h2>
+        <p class="desc">Jetzt wird wirklich kombiniert: Jedes Dokument braucht <strong>ein Datum</strong> und <strong>eine Schublade</strong>. Erst wenn beides stimmt, springt die Messingschublade auf.</p>
+        <div class="section-grid">
+          <div class="box">
+            <strong>Archivdokumente</strong>
+            <div class="archive-grid" style="margin-top:12px">
+              ${docs.map(doc=>`
+                <div class="archive-doc">
+                  <strong>${doc.title}</strong>
+                  <span class="label">${doc.label}</span>
+                  <label>Datumsplakette
+                    <select data-s1-date="${doc.key}">
+                      <option value="">Bitte wählen</option>
+                      ${dates.map(d=>`<option value="${d}" ${state.stationData.s1[doc.key].date===d?"selected":""}>${d}</option>`).join("")}
+                    </select>
+                  </label>
+                  <label style="margin-top:8px;display:block">Schublade
+                    <select data-s1-drawer="${doc.key}">
+                      <option value="">Bitte wählen</option>
+                      ${drawers.map(d=>`<option value="${d}" ${state.stationData.s1[doc.key].drawer===d?"selected":""}>${d}</option>`).join("")}
+                    </select>
+                  </label>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+          <div class="box">
+            <strong>Notizzettel aus dem Archiv</strong>
+            <div class="clue-list" style="margin-top:12px">
+              <div class="clue">In Schublade I liegt das älteste Dokument.</div>
+              <div class="clue">Das Dokument in Schublade II ist genau 34 Jahre jünger als das in Schublade I.</div>
+              <div class="clue">Der Kellerkaufvertrag ist das ältere der beiden 19.-Jahrhundert-Dokumente.</div>
+              <div class="clue">Die jüngste Spur liegt unmittelbar rechts vom Kellerkaufvertrag.</div>
+              <div class="clue">Die Warenzeichenrolle liegt weder in I noch in III.</div>
+              <div class="clue">Das Brauhausregister liegt links vom Kellerkaufvertrag, aber nicht ganz links.</div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="justify-content:flex-start"><button class="btn-primary" id="check1">Archiv prüfen</button></div>
+        <div id="feedback" class="feedback ${isSolved(1)?"good":"bad"}" style="display:${isSolved(1)?"block":"none"}">${isSolved(1)?"Korrekt. Aus Datum und Schubladenlage ergibt sich die erste Messingplatte: H.":""}</div>
+        ${renderHintBox(1)}
+      </section>`;
+    document.querySelectorAll("[data-s1-date]").forEach(sel=>sel.onchange=()=>{ state.stationData.s1[sel.dataset.s1Date].date=sel.value; saveState(); });
+    document.querySelectorAll("[data-s1-drawer]").forEach(sel=>sel.onchange=()=>{ state.stationData.s1[sel.dataset.s1Drawer].drawer=sel.value; saveState(); });
+    document.getElementById("check1").onclick=()=>{
+      const vals = Object.values(state.stationData.s1);
+      const datesChosen = vals.map(v=>v.date);
+      const drawersChosen = vals.map(v=>v.drawer);
+      if(datesChosen.includes("") || drawersChosen.includes("")) return setStationFeedback(false,"Noch nicht vollständig. Jedes Dokument braucht Datum und Schublade.");
+      if(new Set(datesChosen).size!==4 || new Set(drawersChosen).size!==4) return setStationFeedback(false,"Jede Datumsplakette und jede Schublade darf nur einmal verwendet werden.");
+      const s = state.stationData.s1;
+      const ok = s.chronik.date==="1294" && s.chronik.drawer==="I" && s.brauhaus.date==="1328" && s.brauhaus.drawer==="II" && s.keller.date==="1862" && s.keller.drawer==="III" && s.marke.date==="1887" && s.marke.drawer==="IV";
+      ok ? solveStation(1,"Korrekt. Aus Datum und Schubladenlage ergibt sich die erste Messingplatte: H.") : setStationFeedback(false,"Mindestens eine Kombination ist noch falsch. Prüfen Sie insbesondere die beiden 19.-Jahrhundert-Stücke.");
+    };
+    bindHints(1);
+    return;
+  }
+
+  if(id===2){
+    const locations = [
+      {id:"stammhaus", name:"Stammhaus", meta:"Plaque 7 – historischer Ursprung"},
+      {id:"keller", name:"Augustiner-Keller", meta:"Plaque 2 – 1862 erworbener Lagerkeller"},
+      {id:"wagner", name:"Wagner Salons", meta:"Plaque 4 – kleinere exklusive Räume"},
+      {id:"festsaal", name:"Festsaal", meta:"Plaque 9 – großer Saal"},
+      {id:"biergarten", name:"Biergarten", meta:"Plaque 5 – offene Außenfläche"},
+      {id:"brauereihof", name:"Brauereihof", meta:"Plaque 8 – Betriebszone"}
+    ];
+    m.innerHTML = `
+      <section class="station-card">
+        <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">2</span> Routenlogik</span>
+        ${stationHero(2,"Illustration einer stilisierten Münchner Spurensuche mit Karte und Ortsmarken")}
+        <h2>Station 2 – Münchner Spurensuche</h2>
+        <p class="desc">Vier Orte gehören in die Route, zwei sind nur Ablenkung. Stellen Sie die richtige Reihenfolge zusammen und leiten Sie daraus den Plaque-Code ab.</p>
+        <div class="code-lock">
+          <div class="box">
+            <strong>Route zusammenstellen</strong>
+            <div class="slot-grid" style="margin-top:12px">
+              ${[0,1,2,3].map(i=>`
+                <div class="route-slot">
+                  <strong>Stopp ${i+1}</strong>
+                  <select data-s2-slot="${i}">
+                    <option value="">Ort wählen</option>
+                    ${locations.map(loc=>`<option value="${loc.id}" ${state.stationData.s2.slots[i]===loc.id?"selected":""}>${loc.name}</option>`).join("")}
+                  </select>
+                </div>`).join("")}
+            </div>
+          </div>
+          <div class="box">
+            <strong>Kartenlegende</strong>
+            <div class="clue-list" style="margin-top:12px">
+              ${locations.map(loc=>`<div class="clue"><strong>${loc.name}</strong><br><span class="tiny">${loc.meta}</span></div>`).join("")}
+            </div>
+          </div>
+        </div>
+        <div class="section-grid" style="margin-top:12px">
+          <div class="box">
+            <strong>Rätselhinweise</strong>
+            <div class="clue-list" style="margin-top:12px">
+              <div class="clue">Weder die Außenfläche noch die Betriebszone gehören zur Route.</div>
+              <div class="clue">Der erste Stopp ist der historische Ursprung im Zentrum.</div>
+              <div class="clue">Der 1862 erworbene Ort liegt unmittelbar vor dem einzigen Stopp, der nach einer Familie benannt ist.</div>
+              <div class="clue">Die Route endet im größten Saal des Abends.</div>
+            </div>
+          </div>
+          <div class="box">
+            <strong>Plaque-Code</strong>
+            <div class="step-note">Nehmen Sie nach korrekter Route die vier Plaque-Zahlen in genau dieser Reihenfolge.</div>
+            <label style="margin-top:12px;display:block">4-stelliger Code
+              <input id="s2code" maxlength="4" inputmode="numeric" value="${state.stationData.s2.code}" style="width:100%">
+            </label>
+          </div>
+        </div>
+        <div class="row" style="justify-content:flex-start"><button class="btn-primary" id="check2">Route prüfen</button></div>
+        <div id="feedback" class="feedback ${isSolved(2)?"good":"bad"}" style="display:${isSolved(2)?"block":"none"}">${isSolved(2)?"Die Route stimmt. Der Plaque-Code öffnet die nächste Schicht und gibt I frei.":""}</div>
+        ${renderHintBox(2)}
+      </section>`;
+    document.querySelectorAll("[data-s2-slot]").forEach(sel=>sel.onchange=()=>{ state.stationData.s2.slots[Number(sel.dataset.s2Slot)] = sel.value; saveState(); });
+    document.getElementById("s2code").oninput=(e)=>{ state.stationData.s2.code=e.target.value.replace(/\D/g,"").slice(0,4); e.target.value=state.stationData.s2.code; saveState(); };
+    document.getElementById("check2").onclick=()=>{
+      const slots = state.stationData.s2.slots;
+      if(slots.includes("")) return setStationFeedback(false,"Die Route ist noch unvollständig.");
+      if(new Set(slots).size!==4) return setStationFeedback(false,"Jeder Stopp darf nur einmal vorkommen.");
+      const okRoute = JSON.stringify(slots)===JSON.stringify(["stammhaus","keller","wagner","festsaal"]);
+      const okCode = state.stationData.s2.code === "7249";
+      okRoute && okCode ? solveStation(2,"Die Route stimmt. Der Plaque-Code öffnet die nächste Schicht und gibt I frei.") : setStationFeedback(false, okRoute ? "Die Route passt, aber der Plaque-Code noch nicht." : "Die Route ist noch nicht korrekt.");
+    };
+    bindHints(2);
+    return;
+  }
+
+  if(id===3){
+    const initials = [{id:"A",label:"A"},{id:"J",label:"J"},{id:"M",label:"M"},{id:"W",label:"W"}];
+    const symbols = [{id:"abtsstab",label:"Abtsstab"},{id:"hopfen",label:"Hopfenzweig"},{id:"loewe",label:"Löwenkopf"},{id:"krug",label:"Bierkrug"}];
+    const borders = [{id:"warenzeichen",label:"Warenzeichen"},{id:"keller",label:"Kellerwappen"},{id:"festbier",label:"Festbier-Siegel"},{id:"hof",label:"Hofmarke"}];
+    m.innerHTML = `
+      <section class="station-card">
+        <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">3</span> Siegelrekonstruktion</span>
+        ${stationHero(3,"Illustration zum Siegel des Brauers mit Wappen- und Markenmotiven")}
+        <h2>Station 3 – Das Siegel des Brauers</h2>
+        <p class="desc">Hier reicht kein Bauchgefühl mehr. Rekonstruieren Sie das historische Zeichen aus vier Komponenten: linkes Initial, rechtes Initial, Symbol und Randtext.</p>
+        <div class="section-grid">
+          <div class="box">
+            <strong>Siegelprägestation</strong>
+            <div class="builder-grid" style="margin-top:12px">
+              <label>Linkes Initial
+                <select id="s3left"><option value="">Bitte wählen</option>${initials.map(v=>`<option value="${v.id}" ${state.stationData.s3.left===v.id?"selected":""}>${v.label}</option>`).join("")}</select>
+              </label>
+              <label>Rechtes Initial
+                <select id="s3right"><option value="">Bitte wählen</option>${initials.map(v=>`<option value="${v.id}" ${state.stationData.s3.right===v.id?"selected":""}>${v.label}</option>`).join("")}</select>
+              </label>
+              <label>Mittleres Symbol
+                <select id="s3symbol"><option value="">Bitte wählen</option>${symbols.map(v=>`<option value="${v.id}" ${state.stationData.s3.symbol===v.id?"selected":""}>${v.label}</option>`).join("")}</select>
+              </label>
+              <label>Randtext
+                <select id="s3border"><option value="">Bitte wählen</option>${borders.map(v=>`<option value="${v.id}" ${state.stationData.s3.border===v.id?"selected":""}>${v.label}</option>`).join("")}</select>
+              </label>
+            </div>
+          </div>
+          <div class="box">
+            <strong>Archivvermerke</strong>
+            <div class="clue-list" style="margin-top:12px">
+              <div class="clue">Das korrekte Zeichen trägt kein Tier und keinen Hopfen.</div>
+              <div class="clue">Das linke Initial steht alphabetisch 13 Stellen vor dem rechten.</div>
+              <div class="clue">Das kirchliche Symbol steht zwischen den Initialen.</div>
+              <div class="clue">Der Rand nennt eine rechtliche Markierung, kein Event und keinen Ort.</div>
+            </div>
+            <div class="meta-tag">Nur eine Kombination ergibt ein stimmiges historisches Zeichen.</div>
+          </div>
+        </div>
+        <div class="row" style="justify-content:flex-start"><button class="btn-primary" id="check3">Siegel prägen</button></div>
+        <div id="feedback" class="feedback ${isSolved(3)?"good":"bad"}" style="display:${isSolved(3)?"block":"none"}">${isSolved(3)?"Das Siegel ist konsistent rekonstruiert. Aus dem Prägestempel fällt der Buchstabe R.":""}</div>
+        ${renderHintBox(3)}
+      </section>`;
+    ["left","right","symbol","border"].forEach(k=>{
+      const idMap={left:"s3left",right:"s3right",symbol:"s3symbol",border:"s3border"};
+      document.getElementById(idMap[k]).onchange=(e)=>{ state.stationData.s3[k]=e.target.value; saveState(); };
+    });
+    document.getElementById("check3").onclick=()=>{
+      const s = state.stationData.s3;
+      if(Object.values(s).includes("")) return setStationFeedback(false,"Noch nicht vollständig. Vier Komponenten müssen gesetzt werden.");
+      const ok = s.left==="J" && s.right==="W" && s.symbol==="abtsstab" && s.border==="warenzeichen";
+      ok ? solveStation(3,"Das Siegel ist konsistent rekonstruiert. Aus dem Prägestempel fällt der Buchstabe R.") : setStationFeedback(false,"Diese Kombination wirkt heraldisch interessant, aber historisch nicht stimmig.");
+    };
+    bindHints(3);
+    return;
+  }
+
+  if(id===4){
+    const objects=[
+      {id:"glocke",label:"Glocke",icon:ASSETS.stations[4].icons.glocke,style:"left:12%; top:18%; width:7%; height:11%;",num:"4",type:"Signalsymbol"},
+      {id:"schlegel",label:"Schlegel",icon:ASSETS.stations[4].icons.schlegel,style:"left:69%; top:24%; width:10%; height:10%;",num:"7",type:"Schlagwerkzeug"},
+      {id:"zapfhahn",label:"Messingzapfhahn",icon:ASSETS.stations[4].icons.zapfhahn,style:"left:66%; top:55%; width:7%; height:10%;",num:"9",type:"Flussöffner"},
+      {id:"mark200",label:"Fassmarkierung 200",icon:ASSETS.stations[4].icons.mark200,style:"left:18%; top:45%; width:18%; height:17%;",num:"3",type:"Mengenspur"},
+      {id:"holzkeil",label:"Holzkeil",icon:ASSETS.stations[4].icons.holzkeil,style:"left:80%; top:76%; width:9%; height:7%;",num:"2",type:"Vorbereitungsteil"}
+    ];
+    const allFound = state.stationData.s4.found.length===5;
+    m.innerHTML = `
+      <section class="station-card">
+        <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">4</span> Kelleranalyse</span>
+        ${stationHero(4,"Illustration des alten Lagerkellers mit Fässern, Glocke, Werkzeugen und versteckten Objekten")}
+        <h2>Station 4 – Der alte Lagerkeller</h2>
+        <p class="desc">Teil eins: Finden Sie alle relevanten Objekte. Teil zwei: Ordnen Sie die entdeckten Messingzahlen nach der richtigen Funktionsfolge und knacken Sie den Zahlencode.</p>
+        <div class="target-list">${objects.map(o=>`<span class="target ${state.stationData.s4.found.includes(o.id)?"done":""}"><img src="${o.icon}" alt="" loading="lazy" />${o.label}</span>`).join("")}</div>
+        <div class="scene-wrap" aria-label="Kellerszene">
+          <img class="cellar-bg" src="${ASSETS.stations[4].hero}" alt="Stilisierter alter Lagerkeller mit Fässern, Regal und versteckten Objekten" loading="eager" />
+          ${objects.map(o=>`<button class="hidden-item ${state.stationData.s4.found.includes(o.id)?"found":""}" style="${o.style}" data-find="${o.id}" aria-label="${o.label}">${o.label}</button>`).join("")}
+        </div>
+        ${allFound ? `
+          <div class="section-grid" style="margin-top:12px">
+            <div class="box">
+              <strong>Entdeckte Messingzahlen</strong>
+              <div class="evidence-grid" style="margin-top:12px">
+                ${objects.map(o=>`<div class="found-clue"><strong>${o.label}</strong><small>${o.type}</small><small>Messingzahl: ${o.num}</small></div>`).join("")}
+              </div>
+            </div>
+            <div class="box">
+              <strong>Reihenfolgeregeln</strong>
+              <div class="clue-list" style="margin-top:12px">
+                <div class="clue">Die reine Mengenspur kommt zuerst.</div>
+                <div class="clue">Das Vorbereitungsteil steht direkt vor dem Schlagwerkzeug.</div>
+                <div class="clue">Der Flussöffner folgt unmittelbar auf das Schlagwerkzeug.</div>
+                <div class="clue">Das Signalsymbol beendet die Folge.</div>
+              </div>
+              <label style="margin-top:12px;display:block">5-stelliger Kellercode
+                <input id="s4code" maxlength="5" inputmode="numeric" value="${state.stationData.s4.code}" style="width:100%">
+              </label>
+            </div>
+          </div>` : `<div class="meta-tag" style="margin-top:12px">Erst nach allen fünf Funden erscheinen die Messingzahlen.</div>`}
+        <div id="feedback" class="feedback ${isSolved(4)?"good":"bad"}" style="display:${isSolved(4)?"block":"none"}">${isSolved(4)?"Genau so. Der Kellercode rastet ein und gibt S frei.":""}</div>
+        ${renderHintBox(4)}
+      </section>`;
+    document.querySelectorAll("[data-find]").forEach(b=>b.onclick=()=>{
+      const item = b.dataset.find;
+      if(!state.stationData.s4.found.includes(item)){
+        state.stationData.s4.found.push(item);
+        saveState();
+        toast(`${b.ariaLabel} gefunden.`);
+        queueFx("found", { item });
+        renderStation();
+        requestAnimationFrame(runPendingFx);
+      }
+    });
+    if(allFound){
+      document.getElementById("s4code").oninput=(e)=>{ state.stationData.s4.code=e.target.value.replace(/\D/g,"").slice(0,5); e.target.value=state.stationData.s4.code; saveState(); };
+      const codeOk = state.stationData.s4.code === "32794";
+      if(codeOk && !isSolved(4)) solveStation(4,"Genau so. Der Kellercode rastet ein und gibt S frei.");
+    }
+    bindHints(4);
+    return;
+  }
+
+  if(id===5){
+    const opts = ["15 Liter","100 Liter","200 Liter","Ausschankgestell","30 Liter","50 Liter"];
+    m.innerHTML = `
+      <section class="station-card">
+        <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">5</span> Fasslogik</span>
+        ${stationHero(5,"Illustration zur Holzfass-Logik mit Fassgrößen, Schlegel und Glocke")}
+        <h2>Station 5 – Die Holzfass-Logik</h2>
+        <p class="desc">Vier Begriffe, sechs mögliche Zuordnungen – zwei davon sind falsche Fährten. Weisen Sie jeder Bezeichnung die korrekte Bedeutung zu und leiten Sie danach den dreistelligen Fasscode ab.</p>
+        <div class="section-grid">
+          <div class="box">
+            <strong>Zuordnung</strong>
+            <div class="clue-list" style="margin-top:12px">
+              ${["Hase","Sau","Hirsch","Ganter"].map(name=>`
+                <div class="match-row"><strong>${name}</strong>
+                  <select data-s5="${name}">
+                    <option value="">Bitte wählen</option>
+                    ${opts.map(v=>`<option value="${v}" ${state.stationData.s5[name]===v?"selected":""}>${v}</option>`).join("")}
+                  </select>
+                </div>`).join("")}
+            </div>
+          </div>
+          <div class="box">
+            <strong>Hinweiszettel</strong>
+            <div class="clue-list" style="margin-top:12px">
+              <div class="clue">Genau drei Begriffe bezeichnen Fässer; einer bezeichnet das Gestell des Ausschanks.</div>
+              <div class="clue">Der Hase ist das kleinste Fass.</div>
+              <div class="clue">Der Hirsch fasst doppelt so viel wie die Sau.</div>
+              <div class="clue">30 und 50 Liter tauchen in diesem Set nur als falsche Spuren auf.</div>
+            </div>
+            <div class="step-note" style="margin-top:12px">Fasscode-Regel: <strong>letzte Ziffer des kleinsten Fasses</strong> – <strong>erste Ziffer des mittleren Fasses</strong> – <strong>erste Ziffer des größten Fasses</strong></div>
+            <label style="margin-top:12px;display:block">3-stelliger Fasscode
+              <input id="s5code" maxlength="3" inputmode="numeric" value="${state.stationData.s5.code}" style="width:100%">
+            </label>
+          </div>
+        </div>
+        <div class="row" style="justify-content:flex-start"><button class="btn-primary" id="check5">Fasslogik prüfen</button></div>
+        <div id="feedback" class="feedback ${isSolved(5)?"good":"bad"}" style="display:${isSolved(5)?"block":"none"}">${isSolved(5)?"Sauber gelöst. Der Fasscode ist korrekt und die Platte C wird freigegeben.":""}</div>
+        ${renderHintBox(5)}
+      </section>`;
+    document.querySelectorAll("[data-s5]").forEach(sel=>sel.onchange=()=>{ state.stationData.s5[sel.dataset.s5]=sel.value; saveState(); });
+    document.getElementById("s5code").oninput=(e)=>{ state.stationData.s5.code=e.target.value.replace(/\D/g,"").slice(0,3); e.target.value=state.stationData.s5.code; saveState(); };
+    document.getElementById("check5").onclick=()=>{
+      const s = state.stationData.s5;
+      const chosen = [s.Hase,s.Sau,s.Hirsch,s.Ganter];
+      if(chosen.includes("")) return setStationFeedback(false,"Noch nicht vollständig. Vier Begriffe, vier Zuordnungen.");
+      if(new Set(chosen).size!==4) return setStationFeedback(false,"Jede Zuordnung darf nur einmal genutzt werden.");
+      const okMap = s.Hase==="15 Liter" && s.Sau==="100 Liter" && s.Hirsch==="200 Liter" && s.Ganter==="Ausschankgestell";
+      const okCode = s.code === "512";
+      okMap && okCode ? solveStation(5,"Sauber gelöst. Der Fasscode ist korrekt und die Platte C wird freigegeben.") : setStationFeedback(false, okMap ? "Die Zuordnung passt, aber der Fasscode noch nicht." : "Mindestens eine Zuordnung ist noch falsch.");
+    };
+    bindHints(5);
+    return;
+  }
+
+  if(id===6){
+    const steps = [
+      {id:"ganter", label:"Fass auf Ganter"},
+      {id:"zapfhahn", label:"Zapfhahn ansetzen"},
+      {id:"schlegel", label:"Mit Schlegel schlagen"},
+      {id:"glocke", label:"Glocke läuten"},
+      {id:"ausschank", label:"Ausschank beginnen"},
+      {id:"polieren", label:"Siegel polieren"},
+      {id:"archiv", label:"Archiv schließen"}
+    ];
+    m.innerHTML = `
+      <section class="station-card">
+        <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">6</span> Ritualmatrix</span>
+        ${stationHero(6,"Illustration zum Ritual des Anstichs mit Fass, Ganter und Ausschank")}
+        <h2>Station 6 – Das Ritual des Anstichs</h2>
+        <p class="desc">Hier zählt die echte Ablauflogik. Wählen Sie für jede Position genau einen Schritt. Zwei Karten sind falsche Spuren und dürfen nirgendwo auftauchen.</p>
+        <div class="section-grid">
+          <div class="box">
+            <strong>Ritualreihenfolge</strong>
+            <div class="slot-grid" style="margin-top:12px">
+              ${[0,1,2,3,4].map(i=>`
+                <div class="route-slot">
+                  <strong>Schritt ${i+1}</strong>
+                  <select data-s6="${i}">
+                    <option value="">Bitte wählen</option>
+                    ${steps.map(step=>`<option value="${step.id}" ${state.stationData.s6.slots[i]===step.id?"selected":""}>${step.label}</option>`).join("")}
+                  </select>
+                </div>`).join("")}
+            </div>
+          </div>
+          <div class="box">
+            <strong>Regeln</strong>
+            <div class="clue-list" style="margin-top:12px">
+              <div class="clue">Weder Polieren noch Archivarbeit gehören zum eigentlichen Anstichritual.</div>
+              <div class="clue">Bevor der Hahn sitzt, darf nichts geschlagen werden.</div>
+              <div class="clue">Die Glocke kommt erst nach der technischen Arbeit.</div>
+              <div class="clue">Erst nach dem Signal beginnt der Ausschank.</div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="justify-content:flex-start"><button class="btn-primary" id="check6">Ritual prüfen</button></div>
+        <div id="feedback" class="feedback ${isSolved(6)?"good":"bad"}" style="display:${isSolved(6)?"block":"none"}">${isSolved(6)?"Das Ritual sitzt. Der letzte Buchstabe H gleitet aus dem Verschluss.":""}</div>
+        ${renderHintBox(6)}
+      </section>`;
+    document.querySelectorAll("[data-s6]").forEach(sel=>sel.onchange=()=>{ state.stationData.s6.slots[Number(sel.dataset.s6)] = sel.value; saveState(); });
+    document.getElementById("check6").onclick=()=>{
+      const slots = state.stationData.s6.slots;
+      if(slots.includes("")) return setStationFeedback(false,"Noch nicht vollständig. Fünf Schritte werden gebraucht.");
+      if(new Set(slots).size!==5) return setStationFeedback(false,"Jeder Schritt darf nur einmal gesetzt werden.");
+      const target = ["ganter","zapfhahn","schlegel","glocke","ausschank"];
+      const ok = target.every((step,i)=>step===slots[i]);
+      ok ? solveStation(6,"Das Ritual sitzt. Der letzte Buchstabe H gleitet aus dem Verschluss.") : setStationFeedback(false,"Die Reihenfolge ist noch nicht schankfertig.");
+    };
+    bindHints(6);
+    return;
+  }
+}
+function renderFinale(){
+  const m = document.getElementById("main");
+  if(state.finalSolved){
+    m.innerHTML = `
+      <section class="success">
+        <div class="finale-hero"><img src="${ASSETS.finale.hero}" alt="Finale Illustration mit leuchtendem Hirschfass" loading="eager" /></div>
+        <h2>Anstich gelungen</h2>
+        <div class="keg" aria-hidden="true"><div class="foam"></div></div>
+        <p>Sie haben alle Spuren entschlüsselt und das verschwundene Hirschfass rechtzeitig gefunden. Aus Archiv, Stadt, Siegel, Keller und Ritual wurde wieder ein Ganzes. München kann feiern.</p>
+        <div class="row"><button class="btn-primary" id="again">Noch einmal spielen</button></div>
+      </section>`;
+    document.getElementById("again").onclick=()=>{ if(confirm("Neues Spiel starten und alles zurücksetzen?")) resetGame(); };
+    return;
+  }
+  m.innerHTML = `
+    <section class="station-card">
+      <span class="station-badge"><span class="coin" style="width:28px;height:28px;font-size:.8rem">F</span> Finales Schloss</span>
+      <div class="finale-hero"><img src="${ASSETS.finale.hero}" alt="Finale Illustration mit leuchtendem Hirschfass" loading="eager" /></div>
+      <h2>Finale – Das verschwundene Hirschfass</h2>
+      <p class="desc">Sechs Messingbuchstaben liegen vor Ihnen. Setzen Sie sie in die richtige Reihenfolge. Nur das richtige Wort öffnet den Weg zum finalen Anstich.</p>
+      <div class="final-box">
+        <div class="plate-wrap">${LETTERS.map(l=>`<button class="plate" data-add="${l}" aria-label="Buchstabe ${l} wählen">${l}</button>`).join("")}</div>
+        <label>Lösungswort
+          <input id="finalInput" maxlength="6" autocomplete="off" value="${state.stationData.finalInput}" style="width:100%;text-transform:uppercase" />
+        </label>
+        <div class="row" style="justify-content:flex-start">
+          <button id="clearFinal">Leeren</button>
+          <button id="checkFinal" class="btn-primary">Finale prüfen</button>
+        </div>
+        <div id="feedback" class="feedback bad" style="display:none"></div>
+      </div>
+    </section>`;
+  document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{
+    if(state.stationData.finalInput.length<6){
+      state.stationData.finalInput += b.dataset.add;
+      saveState();
+      document.getElementById("finalInput").value = state.stationData.finalInput;
+    }
+  });
+  document.getElementById("finalInput").oninput = (e)=>{
+    state.stationData.finalInput = e.target.value.toUpperCase().replace(/[^A-ZÄÖÜ]/g,"").slice(0,6);
+    e.target.value=state.stationData.finalInput;
+    saveState();
+  };
+  document.getElementById("clearFinal").onclick = ()=>{ state.stationData.finalInput=""; saveState(); renderFinale(); };
+  document.getElementById("checkFinal").onclick = ()=>{
+    if(state.stationData.finalInput === "HIRSCH"){
+      state.finalSolved = true;
+      saveState();
+      toast("Geschafft. Der digitale Anstich läuft.");
+      queueFx("solve", { id:7, final:true });
+      renderFinale();
+      requestAnimationFrame(runPendingFx);
+    } else {
+      setStationFeedback(false,"Noch nicht ganz. Die Buchstaben sind vollständig – aber noch nicht richtig geordnet.");
+    }
+  };
+}
+const guideDialog = document.getElementById("guideDialog");
+document.getElementById("closeGuide").onclick = ()=>guideDialog.close();
+
+startTimer();
+render();
+</script>
+</body>
+</html>
